@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Contact Networking System" />
+        <meta name="theme-color" content="#000000" />
+        <title>Networking By Zuzia</title>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icon-192.png" />
+    </head>
+
+    <body>
+        <!-- Header -->
+        <header class="header">
+            <div class="header-container">
+                <div class="brand">
+                    <span class="brand-mark">
+                        <img src="/logo.jpg" alt="NetGen logo" class="brand-mark-img" />
+                    </span>
+                    <span class="brand-name">NetGen</span>
+                </div>
+                <div class="header-actions">
+                    <span id="userStatus" class="user-status hidden"></span>
+                    <button id="loginHeaderBtn" class="btn-outline" data-action="open-auth">
+                        Sign in
+                    </button>
+                    <button id="signupHeaderBtn" class="btn-primary" data-action="open-auth">
+                        Sign up
+                    </button>
+                    <button id="logoutBtn" class="btn-outline hidden">Logout</button>
+                    <button
+                        id="deleteAccountBtn"
+                        class="btn-icon btn-icon-danger hidden"
+                        type="button"
+                        aria-label="Delete account"
+                        title="Delete account"
+                    >
+                        <svg
+                            class="icon"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            focusable="false"
+                        >
+                            <path
+                                d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 7h2v8h-2v-8zm4 0h2v8h-2v-8zM7 10h2v8H7v-8zm-1 12h12a2 2 0 0 0 2-2V9H4v11a2 2 0 0 0 2 2z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                    </button>
+                    <button id="installBtn" class="btn-primary" style="display: none">
+                        Install
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div id="inlineDialogHost" class="inline-dialog-host"></div>
+
+        <main id="app">
+            <!-- Landing Page -->
+            <section id="landingPage" class="landing">
+                <div class="landing-hero-centered">
+                    <div class="hero-logo">
+                        <img src="/logo.jpg" alt="NetGen Logo" class="logo-image" />
+                    </div>
+                    <h1 class="hero-title-large">NetGen</h1>
+                    <p class="hero-description-centered">
+                        Connect, organize, and grow your network in one place.
+                    </p>
+                    <div class="hero-actions-centered">
+                        <button class="btn-dark" data-action="open-auth">Sign up</button>
+                        <button class="btn-transparent" type="button" data-action="scroll-guide">
+                            Learn more
+                        </button>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h2>Intelligent contact network management</h2>
+                </div>
+
+                <div class="landing-features">
+                    <div class="feature-grid">
+                        <article class="feature-card">
+                            <div class="feature-card-media">
+                                <img
+                                    src="/baranek_z_lupa.jpg"
+                                    alt="Wyszukiwanie"
+                                    class="feature-card-img"
+                                />
+                            </div>
+                            <div class="feature-card-body">
+                                <span class="feature-pill">01 • Discover</span>
+                                <h3>Advanced Search</h3>
+                                <p>
+                                    Tag, search and organize contacts using intelligent filters.
+                                    Find anyone by name, event or hashtag in seconds.
+                                </p>
+                            </div>
+                        </article>
+
+                        <article class="feature-card">
+                            <div class="feature-card-media">
+                                <img
+                                    src="/baranek_na_evencie.jpg"
+                                    alt="Wydarzenia"
+                                    class="feature-card-img"
+                                />
+                            </div>
+                            <div class="feature-card-body">
+                                <span class="feature-pill">02 • Context</span>
+                                <h3>Events and Sources</h3>
+                                <p>
+                                    Track where you met each person and keep context always at hand.
+                                    Remember the details that matter.
+                                </p>
+                            </div>
+                        </article>
+
+                        <article class="feature-card">
+                            <div class="feature-card-media">
+                                <img
+                                    src="/baranek_chmura.jpg"
+                                    alt="Synchronizacja"
+                                    class="feature-card-img"
+                                />
+                            </div>
+                            <div class="feature-card-body">
+                                <span class="feature-pill">03 • Sync</span>
+                                <h3>Always Synchronized</h3>
+                                <p>
+                                    Access your contacts from any device thanks to Firebase
+                                    synchronization. Work offline and sync when you want.
+                                </p>
+                            </div>
+                        </article>
+
+                        <article class="feature-card">
+                            <div class="feature-card-media">
+                                <img
+                                    src="/baranek_z_notesem.jpg"
+                                    alt="Notatki"
+                                    class="feature-card-img"
+                                />
+                            </div>
+                            <div class="feature-card-body">
+                                <span class="feature-pill">04 • Capture</span>
+                                <h3>Notes and Advantages</h3>
+                                <p>
+                                    Record key information about each contact — from common
+                                    interests to potential collaborations.
+                                </p>
+                            </div>
+                        </article>
+
+                        <article class="feature-card">
+                            <div class="feature-card-media">
+                                <img
+                                    src="/baranek_i_aplikacja.jpg"
+                                    alt="PWA"
+                                    class="feature-card-img"
+                                />
+                            </div>
+                            <div class="feature-card-body">
+                                <span class="feature-pill">05 • Everywhere</span>
+                                <h3>PWA Application</h3>
+                                <p>
+                                    Install as a native app on your phone or computer. Fast,
+                                    responsive and always at hand.
+                                </p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <section class="pwa-guide" id="pwaGuide">
+                    <div class="pwa-guide-header">
+                        <h3>Install NetGen like a native app</h3>
+                        <p>
+                            Follow the quick guide below to pin NetGen to your phone's home screen
+                            and open it just like a regular app.
+                        </p>
+                    </div>
+                    <div class="pwa-guide-steps">
+                        <article class="guide-step">
+                            <img
+                                src="/getstarted1.png"
+                                alt="Open the browser menu and tap Add to Home Screen"
+                                loading="lazy"
+                            />
+                            <div>
+                                <h4>Step 1. Open the menu</h4>
+                                <p>
+                                    On your mobile browser tap the options icon (⋮ or Share) and
+                                    choose <strong>Add to Home Screen</strong>. Confirm when
+                                    prompted.
+                                </p>
+                            </div>
+                        </article>
+                        <article class="guide-step">
+                            <img
+                                src="/getstarted2.png"
+                                alt="Confirm installation so NetGen appears on your home screen"
+                                loading="lazy"
+                            />
+                            <div>
+                                <h4>Step 2. Launch from your home screen</h4>
+                                <p>
+                                    After confirming, NetGen appears on your home screen. Tap the
+                                    icon anytime to enjoy the app in a full-screen, native-like
+                                    view.
+                                </p>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="landing-contact-creator" id="landingContactCreator">
+                    <div class="landing-contact-creator-shell">
+                        <div class="landing-contact-creator-copy">
+                            <h3>Contact The Creator</h3>
+                            <p>
+                                Have an idea, suggestion or bug report before creating an account?
+                                Send a message directly to creator and help shape the next version
+                                of NetGen.
+                            </p>
+                        </div>
+                        <form id="landingContactCreatorForm" class="landing-contact-creator-form">
+                            <div class="form-group">
+                                <label for="landingCreatorName">Name *</label>
+                                <input
+                                    type="text"
+                                    id="landingCreatorName"
+                                    placeholder="Your name"
+                                    required
+                                />
+                                <small id="landingCreatorNameError" class="input-error hidden"
+                                    >Please fill this field.</small
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="landingCreatorMessage">Message *</label>
+                                <textarea
+                                    id="landingCreatorMessage"
+                                    rows="5"
+                                    placeholder="Describe your idea or issue and leave contact info if you want a reply"
+                                    required
+                                ></textarea>
+                            </div>
+                            <div
+                                id="landingCreatorNotice"
+                                class="form-error-message hidden"
+                                aria-live="polite"
+                            >
+                                <p id="landingCreatorNoticeText"></p>
+                            </div>
+                            <div class="landing-contact-creator-actions">
+                                <button type="submit" class="btn-dark">Send message</button>
+                            </div>
+                            <p class="section-description">
+                                Messages are forwarded to baran_zuzanna@outlook.com.
+                            </p>
+                        </form>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Auth Page -->
+            <div id="authContainer" class="form-container">
+                <h2>Welcome</h2>
+                <p class="auth-subtitle">Create an account or sign in to continue.</p>
+                <form id="authForm">
+                    <div class="form-group">
+                        <label for="authEmail">Email</label>
+                        <input type="email" id="authEmail" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="authPassword">Password</label>
+                        <input type="password" id="authPassword" required minlength="6" />
+                    </div>
+                    <div class="form-group form-consent">
+                        <label class="consent-label">
+                            <input type="checkbox" id="policyConsent" required />
+                            <span>
+                                I agree to the
+                                <a href="/data-storage-policy.html">
+                                    Privacy &amp; Data Storage Policy
+                                </a>
+                                (press if you are registering an account)
+                            </span>
+                        </label>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="submit-btn" id="loginBtn">Login</button>
+                        <button type="button" class="cancel-btn" id="registerBtn">Register</button>
+                    </div>
+                    <div class="form-buttons">
+                        <button
+                            type="button"
+                            class="btn-outline auth-google-btn"
+                            id="googleLoginBtn"
+                        >
+                            Continue with Google
+                        </button>
+                    </div>
+                    <div class="auth-secondary-actions">
+                        <button type="button" class="auth-reset-link" id="resetPasswordBtn">
+                            Reset your password
+                        </button>
+                    </div>
+                    <div id="authResetNotice" class="form-error-message hidden" aria-live="polite">
+                        <p id="authResetNoticeText"></p>
+                    </div>
+                    <p class="auth-hint">Password must be at least 6 characters.</p>
+                    <div class="auth-back">
+                        <button type="button" class="btn-outline" data-action="landing">
+                            Back
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Main Menu -->
+            <div id="mainMenu" class="menu-container hidden">
+                <div class="main-menu-hero">
+                    <div class="main-menu-copy">
+                        <h2>Main Panel</h2>
+                        <p class="menu-lede">
+                            Choose what you want to explore next — visualize connections, search
+                            your data or capture new people right after you meet them.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="menu-grid">
+                    <button class="menu-card" data-action="add">
+                        <span class="menu-card-icon">
+                            <img src="/butons/add%20new%20contact.png" alt="Add contact icon" />
+                        </span>
+                        <div class="menu-card-body">
+                            <h3>Add New Contact</h3>
+                            <p>
+                                Capture context, notes and hashtags while the conversation is still
+                                fresh.
+                            </p>
+                        </div>
+                    </button>
+
+                    <button class="menu-card" data-action="list">
+                        <span class="menu-card-icon">
+                            <img src="/butons/list.png" alt="List icon" />
+                        </span>
+                        <div class="menu-card-body">
+                            <h3>List Contacts</h3>
+                            <p>
+                                Browse the full directory or a concise list to get a quick overview
+                                of everyone.
+                            </p>
+                        </div>
+                    </button>
+                    <button class="menu-card" data-action="search">
+                        <span class="menu-card-icon">
+                            <img src="/butons/search.png" alt="Search icon" />
+                        </span>
+                        <div class="menu-card-body">
+                            <h3>Search Contact</h3>
+                            <p>
+                                Find any person in seconds using names, events, hashtags or smart
+                                filters.
+                            </p>
+                        </div>
+                    </button>
+
+                    <button class="menu-card" data-action="network-graph">
+                        <span class="menu-card-icon">
+                            <img src="/butons/network_graph.png" alt="Network graph icon" />
+                        </span>
+                        <div class="menu-card-body">
+                            <h3>Network Graph</h3>
+                            <p>
+                                Visualize relationships, spot clusters and discover new warm
+                                introductions.
+                            </p>
+                        </div>
+                    </button>
+                    <button class="menu-card" data-action="statistics">
+                        <span class="menu-card-icon">
+                            <img src="/butons/statistic.png" alt="Statistics icon" />
+                        </span>
+                        <div class="menu-card-body">
+                            <h3>Statistics</h3>
+                            <p>
+                                Track growth, most active events and how your network evolves over
+                                time.
+                            </p>
+                        </div>
+                    </button>
+                    <button class="menu-card" data-action="contact-creator">
+                        <span class="menu-card-icon">
+                            <img src="/butons/contact_creator.png" alt="Contact creator icon" />
+                        </span>
+                        <div class="menu-card-body">
+                            <h3>Contact The Creator</h3>
+                            <p>
+                                Send feedback, ideas or bug reports directly to Zuzia without
+                                leaving the app.
+                            </p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Network Graph View -->
+            <div id="networkGraphView" class="form-container hidden">
+                <h2>Network Graph</h2>
+                <p class="section-description">Interactive visualization of your contact network</p>
+                <div class="graph-controls">
+                    <button type="button" class="btn-control" id="graphZoomIn" aria-label="Zoom in">
+                        +
+                    </button>
+                    <button
+                        type="button"
+                        class="btn-control"
+                        id="graphZoomOut"
+                        aria-label="Zoom out"
+                    >
+                        -
+                    </button>
+                    <button type="button" class="btn-control" id="graphReset">Reset View</button>
+                </div>
+                <div id="networkGraphContainer" class="network-graph-canvas"></div>
+                <div
+                    id="graphContactProfile"
+                    class="graph-contact-profile graph-profile-empty"
+                    aria-live="polite"
+                >
+                    <div class="graph-profile-placeholder">
+                        <h3>Select a contact</h3>
+                        <p>Click any person in the graph to display the full profile here.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics View -->
+            <div id="statisticsView" class="form-container hidden">
+                <h2>Statistics</h2>
+                <p class="section-description">Overview of your contact network</p>
+                <div id="statisticsContent" class="statistics-container"></div>
+            </div>
+
+            <!-- Search Form -->
+            <div id="searchMenu" class="form-container hidden">
+                <h2>Search Contact</h2>
+                <form id="searchForm">
+                    <div class="form-group">
+                        <label>Filters</label>
+                        <div id="searchRowsContainer">
+                            <div class="search-row">
+                                <select class="search-type">
+                                    <option value="">Select filter</option>
+                                    <option value="id">ID</option>
+                                    <option value="name">Name & Surname</option>
+                                    <option value="hashtag">Hashtag</option>
+                                    <option value="event">Event</option>
+                                </select>
+                                <div class="autocomplete-wrapper">
+                                    <input
+                                        type="text"
+                                        class="search-value"
+                                        placeholder="Enter a value"
+                                        autocomplete="off"
+                                    />
+                                    <ul class="autocomplete-list hidden"></ul>
+                                    <button
+                                        type="button"
+                                        class="btn-remove-search"
+                                        title="Remove"
+                                        aria-label="Remove filter"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" id="addSearchRow" class="btn-add-field">
+                            + Add another filter
+                        </button>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="submit-btn">Search</button>
+                        <button type="button" class="cancel-btn" data-action="back">Back</button>
+                    </div>
+                    <div id="searchFormError" class="form-error-message hidden"></div>
+                </form>
+                <div id="searchResults" class="search-results hidden" aria-live="polite"></div>
+            </div>
+
+            <!-- List Submenu -->
+            <div id="listMenu" class="submenu-container hidden">
+                <h2>List Contacts</h2>
+                <div class="menu-buttons">
+                    <button class="menu-btn" data-action="list-full">
+                        Full List (all details)
+                    </button>
+                    <button class="menu-btn" data-action="list-brief">
+                        Brief List (ID, name, surname)
+                    </button>
+                    <button class="menu-btn back-btn" data-action="back">← Back</button>
+                </div>
+            </div>
+
+            <!-- Contact Creator Form -->
+            <div id="contactCreator" class="form-container hidden">
+                <h2>Contact The Creator</h2>
+                <p class="section-description">
+                    Send a suggestion, improvement idea, or report a bug directly to creator.
+                </p>
+                <form id="contactCreatorForm">
+                    <div class="form-group">
+                        <label for="creatorName">Name *</label>
+                        <input type="text" id="creatorName" placeholder="Your name" required />
+                        <small id="creatorNameError" class="input-error hidden"
+                            >Please fill this field.</small
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="creatorMessage">Message *</label>
+                        <textarea
+                            id="creatorMessage"
+                            rows="5"
+                            placeholder="Describe your idea or issue and leave contact info if you want a reply"
+                            required
+                        ></textarea>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="submit-btn">Send suggestion</button>
+                        <button type="button" class="cancel-btn" data-action="back">Cancel</button>
+                    </div>
+                    <p class="section-description">
+                        Messages are forwarded to baran_zuzanna@outlook.com.
+                    </p>
+                </form>
+            </div>
+
+            <!-- Content Area -->
+            <div id="contentArea" class="content-area hidden">
+                <div id="contentDisplay"></div>
+            </div>
+
+            <!-- Add Contact Form -->
+            <div id="addContactForm" class="form-container hidden">
+                <h2>Add New Contact</h2>
+                <div id="helperModeNotice" class="helper-mode-notice hidden">
+                    <p>
+                        You're adding this introducer in a separate tab. Once you finish, use the
+                        button to return to your original contact form.
+                    </p>
+                    <button type="button" id="backToPreviousContactBtn" class="btn-outline">
+                        Back to previous contact
+                    </button>
+                </div>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" autocomplete="off" required />
+                        <small id="nameError" class="input-error hidden"
+                            >Please fill this field.</small
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="surname">Surname *</label>
+                        <input type="text" id="surname" autocomplete="off" required />
+                        <small id="surnameError" class="input-error hidden"
+                            >Please fill this field.</small
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="note">Note *</label>
+                        <textarea
+                            id="note"
+                            maxlength="1000"
+                            required
+                            placeholder="Description of the person - what they do, their role, key details about who they are"
+                        ></textarea>
+                        <small class="char-count"><span id="noteCount">0</span>/1000</small>
+                        <small id="noteError" class="input-error hidden"
+                            >Please fill this field.</small
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="advantage">Advantage</label>
+                        <textarea
+                            id="advantage"
+                            maxlength="1000"
+                            placeholder="What makes this connection valuable? Common interests, potential collaborations, specific expertise"
+                        ></textarea>
+                        <small class="char-count"><span id="advantageCount">0</span>/1000</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventName">Event/Place where you met</label>
+                        <div class="autocomplete-wrapper">
+                            <input
+                                type="text"
+                                id="eventName"
+                                placeholder="Tech Conference 2024, University of Warsaw"
+                                autocomplete="off"
+                            />
+                            <ul id="eventSuggestions" class="autocomplete-list hidden"></ul>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="introducerName">Introduced by (person)</label>
+                        <div class="autocomplete-wrapper">
+                            <input
+                                type="text"
+                                id="introducerName"
+                                placeholder="John Smith"
+                                autocomplete="off"
+                            />
+                            <ul id="introducerSuggestions" class="autocomplete-list hidden"></ul>
+                        </div>
+                        <small id="introducerError" class="input-error hidden">
+                            Please select someone already in your contacts or add them as a new
+                            contact.
+                            <button
+                                type="button"
+                                id="addIntroducerContactBtn"
+                                class="input-error-action"
+                            >
+                                Add as new contact
+                            </button>
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contact Information</label>
+                        <div id="contactMethodsContainer">
+                            <div class="contact-method-row">
+                                <select class="contact-type">
+                                    <option value="">Select type</option>
+                                    <option value="email">Email</option>
+                                    <option value="phone">Phone</option>
+                                    <option value="Linkedin">LinkedIn</option>
+                                    <option value="Instagram">Instagram</option>
+                                    <option value="Facebook">Facebook</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <input
+                                    type="text"
+                                    class="contact-value"
+                                    placeholder="Enter contact details"
+                                />
+                                <button
+                                    type="button"
+                                    class="btn-remove-contact"
+                                    title="Remove"
+                                    aria-label="Remove contact method"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" id="addContactMethod" class="btn-add-field">
+                            + Add another contact method
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>Tags - categories to help you find this contact</label>
+                        <div id="hashtagsContainer">
+                            <div class="hashtag-row">
+                                <input
+                                    type="text"
+                                    class="hashtag-input"
+                                    placeholder="developer, startup, designer, mentor"
+                                />
+                                <button
+                                    type="button"
+                                    class="btn-remove-hashtag"
+                                    title="Remove"
+                                    aria-label="Remove tag"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" id="addHashtag" class="btn-add-field">
+                            + Add another tag
+                        </button>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="submit-btn">Add Contact</button>
+                        <button type="button" class="cancel-btn" data-action="back">Cancel</button>
+                    </div>
+                    <div id="formErrorMessage" class="form-error-message hidden"></div>
+                </form>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+            </div>
+
+            <!-- Modal for duplicates -->
+            <div id="modal" class="modal hidden">
+                <div class="modal-content">
+                    <h3 id="modalTitle"></h3>
+                    <div id="modalBody"></div>
+                    <div class="modal-buttons">
+                        <button id="modalConfirm" class="submit-btn">Confirm</button>
+                        <button id="modalCancel" class="cancel-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="site-footer">
+            <img
+                src="/chmura.png"
+                alt="Cloud overlay"
+                loading="lazy"
+                decoding="async"
+                fetchpriority="low"
+                class="footer-overlay"
+            />
+            <footer class="footer-bar">
+                <p>© 2026 NetGen</p>
+                <p>
+                    Contact:
+                    <a href="mailto:baran_zuzanna@outlook.com">baran_zuzanna@outlook.com</a>
+                </p>
+                <p>All rights reserved</p>
+            </footer>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+        <script type="module" src="/src/main.js"></script>
+    </body>
+</html>

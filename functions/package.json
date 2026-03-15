@@ -1,0 +1,17 @@
+{
+    "name": "netgen-functions",
+    "description": "Firebase Cloud Functions for Networking By Zuzia",
+    "version": "1.0.0",
+    "main": "index.js",
+    "engines": {
+        "node": "20"
+    },
+    "scripts": {
+        "start": "firebase emulators:start --only functions"
+    },
+    "dependencies": {
+        "@sendgrid/mail": "^7.7.0",
+        "cors": "^2.8.5",
+        "firebase-functions": "^5.1.1"
+    }
+}
