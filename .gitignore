@@ -22,3 +22,11 @@ yarn-error.log*
 
 # OS files
 .DS_Store
+
+# Firebase CLI and local reports
+.firebase/
+**/coverage/
+*.log
+
+# Editor and OS artifacts
+Thumbs.db

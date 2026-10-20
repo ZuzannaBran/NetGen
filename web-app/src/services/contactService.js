@@ -1,4 +1,4 @@
-// Contact Service - Business logic (ported from C contact.c)
+// Contact normalization and persistence operations
 import * as firebase from './firebase.js';
 import { capitalizeFirst, parseHashtags } from '../utils/formatters.js';
 

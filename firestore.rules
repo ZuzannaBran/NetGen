@@ -17,14 +17,14 @@ service cloud.firestore {
     match /contacts/{contactId} {
       allow read: if isOwner();
       allow create: if isOwnerForCreate();
-      allow update: if isOwner();
+      allow update: if isOwner() && request.resource.data.ownerId == resource.data.ownerId;
       allow delete: if isOwner();
     }
 
     match /events/{eventId} {
       allow read: if isOwner();
       allow create: if isOwnerForCreate();
-      allow update: if isOwner();
+      allow update: if isOwner() && request.resource.data.ownerId == resource.data.ownerId;
       allow delete: if isOwner();
     }
   }

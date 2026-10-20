@@ -1,4 +1,4 @@
-// Firebase Configuration and Initialization
+// Firebase initialization and Firestore data access
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, updateDoc, getDoc, doc, query, where, writeBatch } from 'firebase/firestore';
 import {
@@ -15,7 +15,7 @@ import {
 } from 'firebase/auth';
 
 // Firebase configuration
-const firebaseEnv = (typeof import.meta !== 'undefined' && import.meta.env) ? import.meta.env : {};
+const firebaseEnv = import.meta.env;
 const firebaseConfig = {
     apiKey: firebaseEnv.VITE_FIREBASE_API_KEY || '',
     authDomain: firebaseEnv.VITE_FIREBASE_AUTH_DOMAIN || '',
@@ -47,19 +47,22 @@ export {
 const CONTACTS_COLLECTION = 'contacts';
 const EVENTS_COLLECTION = 'events';
 
-async function deleteCollectionByOwner(collectionName, ownerId) {
-    const col = collection(db, collectionName);
-    const q = query(col, where('ownerId', '==', ownerId));
-    const snapshot = await getDocs(q);
-    const docs = snapshot.docs;
+const FIRESTORE_BATCH_SIZE = 450;
 
-    for (let i = 0; i < docs.length; i += 450) {
+async function deleteDocumentsInBatches(collectionName, documents) {
+    for (let i = 0; i < documents.length; i += FIRESTORE_BATCH_SIZE) {
         const batch = writeBatch(db);
-        docs.slice(i, i + 450).forEach((docSnap) => {
-            batch.delete(doc(db, collectionName, docSnap.id));
+        documents.slice(i, i + FIRESTORE_BATCH_SIZE).forEach((snapshot) => {
+            batch.delete(doc(db, collectionName, snapshot.id));
         });
         await batch.commit();
     }
+}
+
+async function deleteCollectionByOwner(collectionName, ownerId) {
+    const ownerQuery = query(collection(db, collectionName), where('ownerId', '==', ownerId));
+    const snapshot = await getDocs(ownerQuery);
+    await deleteDocumentsInBatches(collectionName, snapshot.docs);
 }
 
 function requireUserId() {
@@ -192,27 +195,12 @@ export async function deleteEventAndContactsByName(name) {
         where('source_value', '==', name)
     );
     const contactsSnapshot = await getDocs(contactsQuery);
-    const contactDocs = contactsSnapshot.docs;
-
-    // Delete contacts in batches (Firestore limit 500 per batch)
-    for (let i = 0; i < contactDocs.length; i += 450) {
-        const batch = writeBatch(db);
-        contactDocs.slice(i, i + 450).forEach(docSnap => {
-            batch.delete(doc(db, CONTACTS_COLLECTION, docSnap.id));
-        });
-        await batch.commit();
-    }
+    await deleteDocumentsInBatches(CONTACTS_COLLECTION, contactsSnapshot.docs);
 
     // Delete the event document if it exists
     const eventQuery = query(eventsCol, where('ownerId', '==', userId), where('name', '==', name));
     const eventSnapshot = await getDocs(eventQuery);
-    if (!eventSnapshot.empty) {
-        const batch = writeBatch(db);
-        eventSnapshot.docs.forEach(docSnap => {
-            batch.delete(doc(db, EVENTS_COLLECTION, docSnap.id));
-        });
-        await batch.commit();
-    }
+    await deleteDocumentsInBatches(EVENTS_COLLECTION, eventSnapshot.docs);
 }
 
 /**
@@ -307,11 +295,14 @@ async function reassignIntroductions(deletedContact, userId) {
     } else {
         fallbackUpdates = resolveFallbackSource(deletedContact, nameMap);
     }
-    const batch = writeBatch(db);
-    dependents.forEach(dependent => {
-        batch.update(doc(db, CONTACTS_COLLECTION, dependent.docId), fallbackUpdates);
-    });
-    await batch.commit();
+    // Keep every write batch below Firestore's 500-operation limit.
+    for (let i = 0; i < dependents.length; i += FIRESTORE_BATCH_SIZE) {
+        const batch = writeBatch(db);
+        dependents.slice(i, i + FIRESTORE_BATCH_SIZE).forEach((dependent) => {
+            batch.update(doc(db, CONTACTS_COLLECTION, dependent.docId), fallbackUpdates);
+        });
+        await batch.commit();
+    }
 }
 
 /**
@@ -400,7 +391,6 @@ export async function findContactsByEvent(event) {
 }
 
 export { db };
-// (deduplicated exports above)
 
 /**
  * Delete the current user's data and authentication account.

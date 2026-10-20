@@ -7,53 +7,38 @@ export default defineConfig({
             output: {
                 manualChunks: {
                     firebase: ['firebase/app', 'firebase/auth', 'firebase/firestore'],
-                    graph: ['d3-force', 'force-graph']
-                }
-            }
-        }
+                    graph: ['d3-force', 'force-graph'],
+                },
+            },
+        },
     },
     plugins: [
         VitePWA({
             registerType: 'autoUpdate',
-            includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+            includeAssets: ['logo.jpg', 'icon.svg'],
             manifest: {
-                name: 'Networking By Zuzia',
-                short_name: 'NetworkingApp',
-                description: 'Contact Networking System',
-                theme_color: '#000000',
-                background_color: '#000000',
+                name: 'NetGen',
+                short_name: 'NetGen',
+                description: 'Contact and professional networking manager',
+                theme_color: '#111827',
+                background_color: '#111827',
                 display: 'standalone',
                 icons: [
                     {
-                        src: 'icon-192.png',
-                        sizes: '192x192',
-                        type: 'image/png'
+                        src: '/icon.svg',
+                        sizes: 'any',
+                        type: 'image/svg+xml',
+                        purpose: 'any maskable',
                     },
-                    {
-                        src: 'icon-512.png',
-                        sizes: '512x512',
-                        type: 'image/png'
-                    }
-                ]
+                ],
             },
+            // Cache the app shell only. Authenticated Firestore responses must
+            // not be stored in a shared service-worker HTTP cache.
             workbox: {
                 cleanupOutdatedCaches: true,
                 clientsClaim: true,
                 skipWaiting: true,
-                runtimeCaching: [
-                    {
-                        urlPattern: /^https:\/\/firestore\.googleapis\.com\/.*/i,
-                        handler: 'NetworkFirst',
-                        options: {
-                            cacheName: 'firebase-cache',
-                            expiration: {
-                                maxEntries: 10,
-                                maxAgeSeconds: 300
-                            }
-                        }
-                    }
-                ]
-            }
-        })
-    ]
+            },
+        }),
+    ],
 });

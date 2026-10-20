@@ -13,6 +13,7 @@ import {
     deleteCurrentUserAccount,
 } from './services/firebase.js';
 import * as networkGraph from './services/networkGraph.js';
+import { escapeHtml } from './utils/html.js';
 
 // DOM Elements
 const mainMenu = document.getElementById('mainMenu');
@@ -654,15 +655,6 @@ function clearSearchResults() {
     searchResultsContainer.classList.add('hidden');
 }
 
-function escapeHtml(value) {
-    return String(value)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
-
 async function ensureSearchSuggestions() {
     if (searchSuggestionsLoaded) {
         return;
@@ -1118,7 +1110,7 @@ function showDuplicatePrompt(contactData, duplicatesCount) {
 // Display Functions
 function showError(message) {
     listViewState.active = false;
-    contentDisplay.innerHTML = `<div class="error">${message}</div>`;
+    contentDisplay.innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
     showView('content');
     removeFooterBackBar('success');
     scrollToElement(contentDisplay, { block: 'start' });
@@ -1270,8 +1262,8 @@ function renderContact(contact, brief = false) {
     const actionsMarkup = hasActions
         ? `
                 <div class="contact-card-actions">
-                        <button type="button" class="btn-outline btn-edit-contact" data-action="edit-contact" data-doc-id="${contact.docId}">Edit</button>
-                        <button type="button" class="btn-danger btn-delete-contact" data-action="delete-contact" data-doc-id="${contact.docId}">Delete</button>
+                        <button type="button" class="btn-outline btn-edit-contact" data-action="edit-contact" data-doc-id="${escapeHtml(contact.docId)}">Edit</button>
+                        <button type="button" class="btn-danger btn-delete-contact" data-action="delete-contact" data-doc-id="${escapeHtml(contact.docId)}">Delete</button>
                 </div>
         `
         : '';
@@ -1279,7 +1271,7 @@ function renderContact(contact, brief = false) {
 
     return `
         <div class="contact-card"${docIdAttr}${contactIdAttr}>
-            <h3>${fullName}${brief ? '' : ''}</h3>
+            <h3>${fullName}</h3>
             ${details.join('')}
             ${actionsMarkup}
             ${editContainer}
@@ -1545,8 +1537,8 @@ function renderListContactCard(contact) {
     const actionsMarkup = hasActions
         ? `
                 <div class="contact-card-actions">
-                        <button type="button" class="btn-outline btn-edit-contact" data-action="edit-contact" data-doc-id="${contact.docId}">Edit</button>
-                        <button type="button" class="btn-danger btn-delete-contact" data-action="delete-contact" data-doc-id="${contact.docId}">Delete</button>
+                        <button type="button" class="btn-outline btn-edit-contact" data-action="edit-contact" data-doc-id="${escapeHtml(contact.docId)}">Edit</button>
+                        <button type="button" class="btn-danger btn-delete-contact" data-action="delete-contact" data-doc-id="${escapeHtml(contact.docId)}">Delete</button>
                 </div>
         `
         : '';
@@ -1554,7 +1546,7 @@ function renderListContactCard(contact) {
     const expandToggle =
         listViewState.mode === 'brief'
             ? `
-            <button type="button" class="btn-link contact-expand-toggle" data-action="toggle-contact-details" data-contact-key="${contactKey}">
+            <button type="button" class="btn-link contact-expand-toggle" data-action="toggle-contact-details" data-contact-key="${contactKeyAttr}">
                 ${isExpanded ? 'Collapse details' : 'Expand details'}
             </button>
         `
@@ -1621,7 +1613,7 @@ function injectFooterBackBar(scope, label = 'Back to menu') {
     const backBar = document.createElement('div');
     backBar.className = 'list-view-global-back';
     backBar.dataset.backScope = scope;
-    backBar.innerHTML = `<button class="back-btn list-view-back" data-action="back">${label}</button>`;
+    backBar.innerHTML = `<button class="back-btn list-view-back" data-action="back">${escapeHtml(label)}</button>`;
     footer.parentNode.insertBefore(backBar, footer);
 }
 
@@ -2475,7 +2467,7 @@ function showAutocomplete(input, suggestionsList, items) {
     }
 
     suggestionsList.innerHTML = filtered
-        .map((item) => `<li class="autocomplete-item">${item}</li>`)
+        .map((item) => `<li class="autocomplete-item">${escapeHtml(item)}</li>`)
         .join('');
     suggestionsList.classList.remove('hidden');
 }
@@ -2490,7 +2482,7 @@ function setupEventAutocomplete() {
         // Show all events on focus
         if (existingEvents.length > 0) {
             eventList.innerHTML = existingEvents
-                .map((item) => `<li class="autocomplete-item">${item}</li>`)
+                .map((item) => `<li class="autocomplete-item">${escapeHtml(item)}</li>`)
                 .join('');
             eventList.classList.remove('hidden');
         }
@@ -2524,7 +2516,7 @@ function setupIntroducerAutocomplete() {
         // Show all introducers on focus
         if (existingIntroducers.length > 0) {
             introducerList.innerHTML = existingIntroducers
-                .map((item) => `<li class="autocomplete-item">${item}</li>`)
+                .map((item) => `<li class="autocomplete-item">${escapeHtml(item)}</li>`)
                 .join('');
             introducerList.classList.remove('hidden');
         }
@@ -3362,6 +3354,16 @@ onAuthStateChanged(auth, (user) => {
             deleteAccountBtn.classList.add('hidden');
         }
         resetListViewState();
+        contactCache.clear();
+        searchSuggestionsLoaded = false;
+        searchSuggestionsPromise = null;
+        Object.keys(searchSuggestionCache).forEach((key) => {
+            searchSuggestionCache[key] = [];
+        });
+        if (contentDisplay) contentDisplay.textContent = '';
+        if (statisticsContent) statisticsContent.textContent = '';
+        clearSearchResults();
+        resetGraphProfilePanel();
         showLanding();
     }
 });
@@ -3400,6 +3402,3 @@ document.getElementById('installBtn').addEventListener('click', async () => {
     }
 });
 
-// Initialize
-console.log('Networking By Zuzia PWA loaded!');
-console.log('Remember to configure Firebase in src/services/firebase.js');

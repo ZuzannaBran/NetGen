@@ -7,8 +7,9 @@ const FEEDBACK_SUBJECT = 'NetGen feedback';
 
 const sendgridConfig = functions.config().sendgrid || {};
 const sendgridKey = sendgridConfig.key;
-const toAddress = sendgridConfig.to || 'baran_zuzanna@outlook.com';
-const fromAddress = sendgridConfig.from || toAddress;
+const toAddress = sendgridConfig.to;
+const fromAddress = sendgridConfig.from;
+const MAX_FEEDBACK_LENGTH = 5000;
 
 if (sendgridKey) {
     sgMail.setApiKey(sendgridKey);
@@ -27,8 +28,8 @@ exports.sendFeedback = functions.https.onRequest((req, res) => {
             return;
         }
 
-        if (!sendgridKey) {
-            res.status(500).json({ error: 'SendGrid key is not configured.' });
+        if (!sendgridKey || !toAddress || !fromAddress) {
+            res.status(503).json({ error: 'Feedback delivery is not configured.' });
             return;
         }
 
@@ -39,18 +40,17 @@ exports.sendFeedback = functions.https.onRequest((req, res) => {
         }
 
         const trimmedMessage = message.trim();
+        if (trimmedMessage.length > MAX_FEEDBACK_LENGTH) {
+            res.status(413).json({ error: 'Message is too long.' });
+            return;
+        }
 
         try {
             await sgMail.send({
                 to: toAddress,
                 from: fromAddress,
                 subject: FEEDBACK_SUBJECT,
-                text: trimmedMessage,
-                mailSettings: {
-                    sandboxMode: {
-                        enable: false
-                    }
-                }
+                text: trimmedMessage
             });
 
             res.status(200).json({ ok: true });

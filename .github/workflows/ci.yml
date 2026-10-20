@@ -1,0 +1,49 @@
+name: Quality checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  web:
+    name: Web app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: web-app/package-lock.json
+      - name: Install dependencies
+        working-directory: web-app
+        run: npm ci
+      - name: Lint
+        working-directory: web-app
+        run: npm run lint
+      - name: Unit tests
+        working-directory: web-app
+        run: npm test
+      - name: Production build
+        working-directory: web-app
+        run: npm run build
+
+  functions:
+    name: Cloud Functions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: functions/package-lock.json
+      - name: Install dependencies
+        working-directory: functions
+        run: npm ci
+      - name: Syntax check
+        working-directory: functions
+        run: npm run check
