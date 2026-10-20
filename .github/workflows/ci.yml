@@ -18,13 +18,6 @@ jobs:
           node-version: '20'
           cache: npm
           cache-dependency-path: web-app/package-lock.json
-      - name: Refresh lockfile (temporary verification)
-        working-directory: web-app
-        run: |
-          npm install --package-lock-only --ignore-scripts
-          echo NETGEN_LOCK_BEGIN
-          base64 -w 180 package-lock.json
-          echo NETGEN_LOCK_END
       - name: Install dependencies
         working-directory: web-app
         run: npm ci
